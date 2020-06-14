@@ -1,42 +1,26 @@
-const fs=require("fs")
-const data=require('./second');
+const express=require('express')
+const app=express()
+const path=require('path')
+const person=require('./server/routes/person')
+const bodyParser=require('body-parser');
 
+app.use(express.static(path.join(__dirname,'client/css')));
+app.use(express.static(path.join(__dirname,'client/js')));
+app.use(express.static(path.join(__dirname,'node_modules/bootstrap/dist/css')))
+app.use(express.static(path.join(__dirname,'node_modules/bootstrap/dist/js')))
+app.use(express.static(path.join(__dirname,"node_modules/jquery/dist")))
 
-console.log(data.app);
-data.fun()
-console.log(data.names);
-data.onemore();
+app.use(bodyParser.urlencoded())  //to parse incoming request which is in url encoded format
 
-fs.readFile("package.json","utf-8",function(err,data){
-    if(err)
-         console.log("Error reading file")
-    else
-        console.log(data);
+app.use("/person",person);
+
+app.get('/',function(request,response){
+     response.send("Express APP is working...!!!!!");
 })
 
-console.log("First line ");
-console.log("second line");
-
-/*
-       Node JS is a single threaded program 
-       It uses event based approach
-       Node Js is Non-blocking and asynchronous
-
-
-       file f=new file("x.txt")
-      result= f.readFile(bytes);  (it takes time and waits....) 300ms  -- Blocking/ synchronous
-       //execution wont move to the next line...
-       result+x;
-
-       asynchronous approach
-
-       fs.readFile(tempfile, function(){
-           sdks;fksdffsd
-       });
-
-       //code after
-       x+ logic // will execute even before the file is read
-
-*/
-
-
+app.get("/home",function(request,response){
+    response.sendFile(path.join(__dirname,'client/html/index.html'));
+})
+app.listen('4050',function(){
+     console.log("The server is started and running on port number 4050")
+})
