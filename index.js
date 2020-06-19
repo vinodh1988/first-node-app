@@ -14,6 +14,10 @@ app.use(bodyParser.urlencoded())  //to parse incoming request which is in url en
 
 app.use("/person",person);
 
+
+app.set('views', path.join(__dirname, 'client/templates'));//setting the path of template files
+app.set('view engine', 'pug'); //configuring view Engine
+
 app.get('/',function(request,response){
      response.send("Express APP is working...!!!!!");
 })
